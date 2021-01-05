@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Recipe } from './recipe.model';
+import { RecipesService } from './recipes.service';
 
 @Component({
   selector: 'app-recipes',
@@ -7,24 +9,20 @@ import { Recipe } from './recipe.model';
   styleUrls: ['./recipes.page.scss'],
 })
 export class RecipesPage implements OnInit {
-  recipes: Recipe[] = [
-    {
-      id: 'r1',
-      title: 'Schnitzel',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Breitenlesau_Krug_Br%C3%A4u_Schnitzel.JPG/1280px-Breitenlesau_Krug_Br%C3%A4u_Schnitzel.JPG',
-      ingredients: ['French Fries', 'Pork Meat', 'Salad']
-    },
-    {
-      id: 'r2',
-      title: 'Sphagetti',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Spaghetti_carbonara_-_Trishhhh.jpg/359px-Spaghetti_carbonara_-_Trishhhh.jpg',
-      ingredients: ['Pasta', 'Tomato Sauce', 'Salad']
-    }
-  ]
+  
+  recipes: Recipe[];
 
-  constructor() { }
+  constructor(
+    private recipesService: RecipesService,
+    private router: Router) { }
 
   ngOnInit() {
+    this.recipes = this.recipesService.getAllRecipes();
+    console.log(this.recipesService.getAllRecipes());
   }
 
+  goTo(recipeId: string){
+    this.router.navigate(['/recipe-detail',{id: recipeId}])
+  }
+  
 }
